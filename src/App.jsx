@@ -10,7 +10,7 @@ import Navbar from './Navbar';
 function App() {
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "pink" }}>
         <Toolbar>
           <Typography variant="h6"> Personal Training </Typography>
         </Toolbar>

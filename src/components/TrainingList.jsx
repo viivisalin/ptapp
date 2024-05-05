@@ -9,17 +9,17 @@ import dayjs from 'dayjs';
 
 export default function TrainingList() {
 
-    const [trainings, setTrainings] = useState([{ date: '', duration: '', activity: '' }]);
-    const [customerInfo, setCustomerInfo] = useState([{ firstname: '', lastname: '' }])
-    const URLT = 'https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings';
+    const [trainings, setTrainings] = useState([{ date: '', duration: '', activity: '', firstname: '', lastname: ''}]);
+    //const [customers, setCustomers] = useState([{ firstname: '', lastname: '' }]);
+    const URLT = 'https://customerrestservice-personaltraining.rahtiapp.fi/gettrainings';
 
     const colums = [
         { headerName: 'Date', field: 'date', sortable: true, filter: true, flex: 1, valueGetter: (params) => {
             return dayjs(params.data.date).format('DD.MM.YYYY HH:mm') }},
         { headerName: 'Duration', field: 'duration', sortable: true, filter: true, flex: 1 },
         { headerName: 'Activity', field: 'activity', sortable: true, filter: true, flex: 1 },
-        { headerName: 'First Name', field: 'firstname', sortable: true, filter: true, flex: 1 },
-        { headerName: 'Last Name', field: 'lastname', sortable: true, filter: true, flex: 1 }
+        { headerName: 'First Name', field: 'firstname', sortable: true, filter: true, flex: 1, valueGetter: (params) => {return params.data.customer ? params.data.customer.firstname: ''} },
+        { headerName: 'Last Name', field: 'lastname', sortable: true, filter: true, flex: 1, valueGetter: (params) => {return params.data.customer ? params.data.customer.lastname: ''} }
     ];
 
     useEffect(() => getTrainings(), []);
@@ -31,16 +31,10 @@ export default function TrainingList() {
                 return response.json();
             })
             .then(responsedata => {
-                console.log(responsedata._embedded.trainings);
-                setTrainings(responsedata._embedded.trainings);
+                console.log(responsedata);
+                setTrainings(responsedata);
             })
             .catch(error => console.error(error))
-    }
-    
-    useEffect(() => getCustomerInfo(), []);
-
-    const getCustomerInfo = () => {
-        
     }
 
     const gridRef = useRef();
